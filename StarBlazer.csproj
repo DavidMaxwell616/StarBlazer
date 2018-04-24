@@ -70,6 +70,7 @@
     <Content Include="assets\images\laser.png" />
     <Content Include="assets\images\orientation.jpg" />
     <Content Include="assets\images\player.png" />
+    <Content Include="assets\images\preload.png" />
     <Content Include="assets\images\StarblazerBkgd.bmp" />
     <Content Include="assets\images\StarblazerSplash.bmp" />
     <Content Include="assets\images\jet.png" />

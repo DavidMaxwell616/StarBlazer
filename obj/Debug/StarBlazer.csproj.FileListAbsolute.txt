@@ -9,3 +9,14 @@ C:\Users\dmaxwell\Documents\Visual Studio 2013\Projects\StarBlazer\StarBlazer\bi
 C:\Users\dmaxwell\Documents\Visual Studio 2013\Projects\StarBlazer\StarBlazer\obj\Debug\StarBlazer.csprojResolveAssemblyReference.cache
 C:\Users\dmaxwell\Documents\Visual Studio 2013\Projects\StarBlazer\StarBlazer\obj\Debug\StarBlazer.dll
 C:\Users\dmaxwell\Documents\Visual Studio 2013\Projects\StarBlazer\StarBlazer\obj\Debug\StarBlazer.pdb
+C:\Users\dmaxwell\Downloads\StarBlazer\StarBlazer\StarBlazer\bin\StarBlazer.dll.config
+C:\Users\dmaxwell\Downloads\StarBlazer\StarBlazer\StarBlazer\bin\StarBlazer.dll
+C:\Users\dmaxwell\Downloads\StarBlazer\StarBlazer\StarBlazer\bin\StarBlazer.pdb
+C:\Users\dmaxwell\Downloads\StarBlazer\StarBlazer\StarBlazer\obj\Debug\StarBlazer.csprojResolveAssemblyReference.cache
+C:\Users\dmaxwell\Downloads\StarBlazer\StarBlazer\StarBlazer\obj\Debug\StarBlazer.dll
+C:\Users\dmaxwell\Downloads\StarBlazer\StarBlazer\StarBlazer\obj\Debug\StarBlazer.pdb
+C:\Users\maxxd_000\Downloads\StarBlazer\StarBlazer\StarBlazer\StarBlazer\bin\StarBlazer.dll
+C:\Users\maxxd_000\Downloads\StarBlazer\StarBlazer\StarBlazer\StarBlazer\bin\StarBlazer.pdb
+C:\Users\maxxd_000\Downloads\StarBlazer\StarBlazer\StarBlazer\StarBlazer\obj\Debug\StarBlazer.csprojResolveAssemblyReference.cache
+C:\Users\maxxd_000\Downloads\StarBlazer\StarBlazer\StarBlazer\StarBlazer\obj\Debug\StarBlazer.dll
+C:\Users\maxxd_000\Downloads\StarBlazer\StarBlazer\StarBlazer\StarBlazer\obj\Debug\StarBlazer.pdb
