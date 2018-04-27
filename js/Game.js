@@ -95,7 +95,8 @@ StarBlazer.Game.prototype = {
         this.attack_speed = 5;
         // player state variables
         this.player_score = 0;  // the score
-        this.highscore = 0;  // the high score
+        var hiscore = localStorage.getItem("highscore");
+        this.highscore = hiscore || 0;  // the high score
         this.player_ships = 3;  // ships left
         this.player_damage = 0;  // damage of player
         this.player_counter = 0;  // used for state transition tracking
@@ -288,7 +289,6 @@ StarBlazer.Game.prototype = {
         lasers.createMultiple(this.MAX_LASERS, 'laser');
         lasers.callAll('anchor.setTo', 'anchor', 0.5, 1.0);
         lasers.setAll('checkWorldBounds', true);
-        lasers.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds', this.resetLaser);
         lasers.setAll('state', this.DEAD);
 
         this.bomb = this.game.add.sprite(this.game.width / 2, this.game.height / 2, 'bomb');
@@ -325,11 +325,13 @@ StarBlazer.Game.prototype = {
         object.state = this.DEAD;
         object.visible = false;
     },
-    resetLaser: function (laser) {
-        //laser.reset(0,0);
-        //laser.visible = false;
-        //console.log(laser);
-        laser.kill();
+    resetLaser: function (laser,x,y) {
+        //laser.reset(x, y);
+        laser.xv = this.LASER_SPEED;
+        laser.state = this.ALIVE;
+        laser.visible = true;
+        laser.x = x;
+        laser.y = y;
     },
  
 
@@ -342,9 +344,10 @@ StarBlazer.Game.prototype = {
         lasers.forEach(function(laser) {
             if (laser.state == this.ALIVE) {
                 // move the pulse upward
-                laser.x += laser.xv;
-                if (laser.x > this.SCREEN_WIDTH)
-                    this.resetLaser(laser);
+                laser.x +=this.LASER_SPEED;
+                if (laser.x > this.SCREEN_WIDTH) {
+                    this.resetLaser(laser, laser.x,laser.y);
+                }
                 // test for collision with enemies
                 //Laser COLLISION WITH JETS
                 if (this.Level == 2 || this.Level == 4) {
@@ -362,7 +365,7 @@ StarBlazer.Game.prototype = {
                                     36,
                                     jet.xv *1,
                                     jet.yv *1);
-                                laser.reset();
+                                this.resetLaser(laser, laser.x, laser.y);
 
                                 jet.x=this.SCREEN_WIDTH;
                                 jet.y=this.getRandomInt(0, this.SCREEN_HEIGHT);
@@ -388,7 +391,7 @@ StarBlazer.Game.prototype = {
                                         airship.xv *.1,
                                         airship.yv *.1);
 
-                                    laser.reset();
+                                    this.resetLaser(laser, laser.x, laser.y);
                                     airship.kill();
                                     airship.reset(this.SCREEN_WIDTH, this.getRandomInt(0, this.SCREEN_HEIGHT));
                                     // update score
@@ -402,18 +405,18 @@ StarBlazer.Game.prototype = {
                             if (balloon.state == this.ALIVE) {
                                 // test for collision 
                                 if (this.Collision_Test(laser, balloon)) {
-                                    // kill pulse
-                                    laser.kill();
-
-                                    balloon.state = this.DEAD;
-                                    balloon.visible = false;
-                                    //laser hits balloon
+                                     //laser hits balloon
                                     this.Start_Explosion(laser.x - 10,
                                         laser.y - 20,
                                         42,
                                         36,
                                         balloon.xv *.1,
                                         balloon.yv *.1);
+                                    // kill pulse
+                                    this.resetLaser(laser, laser.x, laser.y);
+
+                                    balloon.state = this.DEAD;
+                                    balloon.visible = false;
 
                                     // update score
                                     this.player_score += 10;
@@ -443,7 +446,8 @@ StarBlazer.Game.prototype = {
                                         36,
                                         enemy_missile.xv *.1,
                                         enemy_missile.yv *.1);
-                                    laser.kill();
+                                    // kill pulse
+                                    this.resetLaser(laser, laser.x, laser.y);
 
                                     enemy_missile.state = this.DEAD;
                                     enemy_missile.visible = false;
@@ -672,13 +676,35 @@ StarBlazer.Game.prototype = {
 
     Fire_Laser: function(x,y)
     {
-        this.bomb.state = this.DEAD;
+         this.bomb.state = this.DEAD;
         this.bomb.visible = false;
         //console.log(lasers.children);
-        var laser = lasers.getFirstExists(false);
-        laser.xv = this.LASER_SPEED;
-        laser.reset(x, y);
-        laser.state = this.ALIVE;
+        //var laser = lasers.getFirstDead();
+
+        console.log(lasers.children.filter(x => x.state === this.DEAD).length);
+        if(lasers.children.filter(x => x.state === this.DEAD).length==0)
+        {
+            lasers.setAll('state',this.DEAD);
+            lasers.setAll('visible',false);
+        }
+        var fired = false;
+        lasers.forEach(function(laser) {
+            // kill pulse
+           // laser.reset(x, y,100);
+         //   laser.xv = 1;
+        //this.resetLaser(laser);
+         //   laser.visible = true;
+         //   laser.state = this.ALIVE;
+         //   return;
+
+ 
+            if (laser.state == this.DEAD && !fired)
+            {
+                this.resetLaser(laser, x, y);
+                fired = true;
+            }
+        },
+                this); // end for Laser
 
     }, // end Fire_Laser
 
@@ -1362,6 +1388,14 @@ Delete_Laser();
 return(1);
 }, // end Game_Shutdown
 
+Check_High_Score: function()
+{
+    var highscore = 'HS: ' + localStorage.getItem("highscore");
+    if (this.score > localStorage.getItem("highscore"))
+    {
+            localStorage.setItem("highscore", this.score);
+        }
+},
     ///////////////////////////////////////////////////////
 Game_Main: function()
 {
@@ -1479,10 +1513,12 @@ if (this.player.state == this.DEAD && this.player_ships == 0)
     this.Draw_Info_Text("Press spacebar play again",
                  220,
                  280, 32, 'rgb(255,0,0)', 'Impact');
+    this.Check_High_Score();
 } // end if
 
-
-    //NEXT LEVEL?
+        
+        
+//NEXT LEVEL?
 
 if (this.radar_killed&&this.Level==1)
 {
@@ -1546,6 +1582,7 @@ if (this.headquarters_killed)
     str = "Or P to Play Again";
     n = str.length;
     this.Draw_Info_Text(str, this.SCREEN_WIDTH - (6 * n) / 2, 260, 'rgb(255,0,0)', 'Impact');
+    this.Check_High_Score();
 }
 
 if (this.player_score > this.highscore) this.highscore = this.player_score;
