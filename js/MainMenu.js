@@ -1,43 +1,29 @@
+function mainMenuCreate() {
 
-StarBlazer.MainMenu = function (game) {
+        var background = game.add.image(0, 0, 'background');
+        background.width = game.game.width;
+        background.height = game.game.height;
+        game.add.image(game.game.width * .82, game.game.height * .95, 'maxxdaddy');
 
-	this.music = null;
-	this.playButton = null;
+	    splash = game.add.image(60, 20, 'splash');
+		splash.width = game.game.width*.9;
+		splash.height = game.game.height*.9
+        
+		game.input.onDown.addOnce(game.startGame, this);
+		game.spaceKey = game.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+	};
 
+	function mainMenuUpdate() {
+	    if (game.spaceKey.isDown) {
+	        game.spaceKey = null;
+	        splash.visible = false;
+	        startGame=true;
+	    }
 
-};
+	};
 
-StarBlazer.MainMenu.prototype = {
-
-	create: function () {
-
-		// this.music = this.add.audio('titleMusic');
-		// this.music.play();
-
-        var background = this.add.image(0, 0, 'background');
-        background.width = this.game.width;
-        background.height = this.game.height;
-        this.add.image(360, 350, 'maxxdaddy');
-
-	    var splash = this.add.image(50, 50, 'splash');
-		splash.width = this.game.width*.75;
-		splash.height = this.game.height*.75
-
-		this.input.onDown.addOnce(this.startGame, this);
-
-	},
-
-	update: function () {
-
-	},
-
-	startGame: function (pointer) {
-
-		// this.music.stop();
-
-		//	And start the actual game
-		this.state.start('Game');
+	function startGame() {
+	    splash.visible = false;
+      startGame=true;
 
 	}
-
-};

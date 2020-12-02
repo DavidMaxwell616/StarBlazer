@@ -1,33 +1,15 @@
-﻿<!DOCTYPE html>
-<HTML>
-<HEAD>
-    <link rel="stylesheet" href="css/stylesheet.css" type="text/css" charset="utf-8" />
-	<script src="js/phaser.min.js"></script>
-    <script src="js/Boot.js"></script>
-    <script src="js/Preloader.js"></script>
-    <script src="js/MainMenu.js"></script>
-    <script src="js/Game.js"></script>
- </HEAD>
-<body>
-
-	<div id="game"></div>
-	<div id="orientation"></div>
-
-<script type="text/javascript">
-
-    window.onload = function () {
-
-        var game = new Phaser.Game(512, 384, Phaser.CANVAS, 'game');
-
-        game.state.add('Boot', StarBlazer.Boot);
-        game.state.add('Preloader', StarBlazer.Preloader);
-        game.state.add('MainMenu', StarBlazer.MainMenu);
-        game.state.add('Game', StarBlazer.Game);
-
-        game.state.start('Boot');
-
-    }
-</script>
-
-</body>
-</HTML>
+﻿<meta charset="UTF-8">
+<html>
+<head>
+    <title>Star Blazer</title>
+      <script src="js/phaser.min.js"></script>
+      <script src="js/boot.js"></script>
+      <script src="js/preload.js"></script>
+      <script src="js/mainmenu.js"></script>
+      <script src="js/game.js"></script>
+    </head>
+    
+    <body>
+      <div id="canvas" width="800" height="600"></div>
+    </body>
+</html>
