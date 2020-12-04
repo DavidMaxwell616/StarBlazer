@@ -1,4 +1,4 @@
-﻿const game = new Phaser.Game(1000, 640, Phaser.BOX2D, 'game', {
+﻿﻿const game = new Phaser.Game(1000, 640, Phaser.BOX2D, 'game', {
   preload,
   create,
   update
