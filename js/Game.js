@@ -51,7 +51,8 @@ function gameCreate() {
         keyRight.onDown.add(MoveRight, this);
         keyLeft = game.input.keyboard.addKey(KEYCODE_LEFT);
         keyLeft.onDown.add(MoveLeft, this);
-    };
+        game.input.onDown.add(Fire, this);
+      };
 
     function Fire() {
         if (gameover) {
