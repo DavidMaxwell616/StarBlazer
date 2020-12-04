@@ -5,20 +5,12 @@
 });
 
 function create() {
-  if (!startGame) mainMenuCreate();
-  else gameCreate();
+ mainMenuCreate();
 }
 
 function gameCreate() {
-        game.physics.startSystem(Phaser.Physics.ARCADE);
+         game.physics.startSystem(Phaser.Physics.ARCADE);
  
-        Init_Game();
-        // hide the mouse
-        //ShowCursor(FALSE);
-    }
-
-    function Init_Game()
-    {
         gameLost = false;
         gameWon = false;
         // load the background bitmap in with all the graphics
@@ -85,7 +77,7 @@ function gameCreate() {
         //     return;
         // }
         if (!gameover && player.y < SCREEN_HEIGHT - 150) {
-            Fire_Laser(player.x + 16, player.y);
+            Fire_Laser(player.x + 50, player.y+4);
         }
         else
             //            if (player.y >= SCREEN_HEIGHT - 100)
@@ -798,7 +790,9 @@ function Initialize_Enemy_Positions()
             house.state = ALIVE;
             house.visible = true;
             house.xv = -5;
-            house.frame = getRandomInt(1, 5);
+            house.frame = getRandomInt(1, 4);
+            if(getRandomInt(1, 20)==20)
+            house.frame = 5;
             house.x = getRandomInt(1, SCREEN_WIDTH);
             house.y = GROUND-30;
         },
@@ -1177,11 +1171,11 @@ function Init_Score()
     var color = ' rgb(0,255,0)';
     var t = game.add.text(10, 10, "", { fill: color, font: f });
     scoreText.push(t);        
-    var t = game.add.text(170, 10, "", { fill: color, font: f });
+    var t = game.add.text(game.width*.2, 10, "", { fill: color, font: f });
     scoreText.push(t);
-    var t = game.add.text(360, 10, "", { fill: color, font: f });
+    var t = game.add.text(game.width*.5, 10, "", { fill: color, font: f });
     scoreText.push(t);
-    var t = game.add.text(600, 10, "", { fill: color, font: f });
+    var t = game.add.text(game.width*.8, 10, "", { fill: color, font: f });
     scoreText.push(t);
 };
 
