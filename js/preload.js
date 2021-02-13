@@ -22,6 +22,8 @@ function preload() {
   game.load.image('balloon', 'assets/images/balloon.png');
   game.load.image('fuel_tank', 'assets/images/fuel_tank.png');
   game.load.image('star', 'assets/images/star.png');
+  this.load.image('arrow', 'assets/images/arrow.png');
+ 
 
   game.load.onLoadStart.add(loadStart, this);
   game.load.onLoadComplete.add(loadComplete, this);

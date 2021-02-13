@@ -37,24 +37,48 @@ function gameCreate() {
         Initialize_Enemy_Positions();
         Init_Explosions();
         Init_Score();
+        setUpArrows();
         keyFire = game.input.keyboard.addKey(KEYCODE_SPACE);
         keyFire.onDown.add(Fire, this);
-        keyUp = game.input.keyboard.addKey(KEYCODE_A);
+        keyUp = game.input.keyboard.addKey(KEYCODE_UP);
         keyUp.onDown.add(MoveUp, this);
-        keyDown = game.input.keyboard.addKey(KEYCODE_Z);
+        keyDown = game.input.keyboard.addKey(KEYCODE_DOWN);
         keyDown.onDown.add(MoveDown, this);
-        keyUp2 = game.input.keyboard.addKey(KEYCODE_UP);
-        keyUp2.onDown.add(MoveUp, this);
-        keyDown2 = game.input.keyboard.addKey(KEYCODE_DOWN);
-        keyDown2.onDown.add(MoveDown, this);
         keyRight = game.input.keyboard.addKey(KEYCODE_RIGHT);
         keyRight.onDown.add(MoveRight, this);
         keyLeft = game.input.keyboard.addKey(KEYCODE_LEFT);
         keyLeft.onDown.add(MoveLeft, this);
-        game.input.onDown.add(Fire, this);
+        game.input.onDown.add(TouchFire, this);
       };
 
-    function Fire() {
+      function setUpArrows(){
+        for (let index = 0; index < arrows.length; index++) {
+         var arrow = arrowStats[index];
+         arrows[index] = game.add.image(0,0,'arrow');
+          arrows[index].scale.setTo(.25);
+          arrows[index].anchor.setTo(0.5, 0.5);
+          arrows[index].xOffset = arrow.xOffset;  
+          arrows[index].yOffSet = arrow.yOffset;  
+          arrows[index].x = arrows[index].width*.25+40+arrow.xOffset;
+          arrows[index].y =SCREEN_HEIGHT -arrows[index].width*.25+-40+arrow.yOffset;
+          if(arrow.direction=='right' || arrow.direction=='left'){
+          arrows[index].x += 900;
+          arrows[index].y += 30;
+          }
+         arrows[index].name= arrow.direction;
+         
+         arrows[index].inputEnabled = true;
+         arrows[index].angle =arrow.angle;  
+        }
+      }
+function TouchFire(pointer){
+const arrowsRight = arrows[0].x+arrows[0].width/2;
+const arrowsTop = arrows[3].y-arrows[3].height/2;
+if(pointer.x>arrowsRight)
+Fire();
+}
+
+      function Fire() {
         if (gameover) {
             gameover = false;
             Level = 1; 
@@ -91,13 +115,13 @@ function gameCreate() {
             // move player up
             player.yv -= 1;
 
-        } // end if
+        } 
     };
     function MoveDown(){
         if (outoffuel == 0) {
             // move player down
             player.yv += 1;
-        } // end if
+        } 
     };
     function MoveRight()
     {
@@ -158,9 +182,9 @@ function gameCreate() {
             star.xv = -plane*5;
             star.tint = Math.random() * 0xffffff;
             star.visible = true;
-        }, this); // end for index
+        }, this); 
 
-    }; // end Init_Stars
+    }; 
 
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -178,13 +202,10 @@ function gameCreate() {
             if (star.x <= 0)
                 star.x =SCREEN_WIDTH;
 
-        }, this); // end for index
+        }, this); 
 
-    }; // end Move_Stars
+    }; 
 
-
-
-    ///////////////////////////////////////////////////////////
     function Init_Laser()
     {
         // this function initializes and loads all the Laser 
@@ -226,7 +247,7 @@ function gameCreate() {
 
 
     };
-    ///////////////////////////////////////////////////////////
+
     function resetAirship(object) {
         object.reset();
     };
@@ -278,10 +299,10 @@ function gameCreate() {
                                 jet.y=getRandomInt(0, SCREEN_HEIGHT);
                                 // update score
                                 player_score += 100;
-                            } // end if collision
-                        } //end for jet
+                            } 
+                        } 
                     },
-                        this); // end Level 3
+                        this); 
                 }
                     //Laser COLLISION WITH AIRSHIPS
                     if (Level == 3 || Level == 5) {
@@ -303,10 +324,10 @@ function gameCreate() {
                                     airship.reset(SCREEN_WIDTH, getRandomInt(0, SCREEN_HEIGHT));
                                     // update score
                                     player_score += 10;
-                                } // end if collision
-                            } //end if airship
+                                } 
+                            } 
                         },
-                            this); //end for airship
+                            this); 
 
                         balloons.forEach(function(balloon) {
                             if (balloon.state == ALIVE) {
@@ -327,12 +348,12 @@ function gameCreate() {
 
                                     // update score
                                     player_score += 10;
-                                } // end if collision
-                            } //end if airship
+                                } 
+                            } 
 
 
                         },
-                            this); // end Level 3
+                            this); 
                     }
                     if (Level == 4 || Level == 5) {
                         enemy_missiles.forEach(function(enemy_missile) {
@@ -360,17 +381,16 @@ function gameCreate() {
 
                                     // update score
                                     player_score += 100;
-                                } // end if collision
-                            } //end if airship
+                                } 
+                            } 
 
 
                         },
-                            this); // end Level 4 or 5
+                            this); 
                     }
             }
-            // end if Laser
         },
-            this); // end for Laser
+            this); 
         //CHECK IF BOMB IS DROPPING
         if (bomb.state == ALIVE) {
             bomb.yv+=.1;
@@ -437,10 +457,10 @@ function gameCreate() {
                                 // update score
                             player_score += 10;
                             bomb.reset();
-                        } // end if collision
-                    } //end for airship
+                        } 
+                    } 
                 },
-                    this); // end for Laser
+                    this); 
             }
 
             if (Level == 2 || Level == 4) {
@@ -458,18 +478,17 @@ function gameCreate() {
                         // update score
                         tank_killed = 1;
                         player_score += 500;
-                    } // end if collision
-                } //end if airship
+                    } 
+                } 
                 if (cactus.state == ALIVE) {
                     // test for collision 
                     if (Collision_Test(bomb,cactus))
                         // kill pulse
                         bomb.state = DEAD;
                 }
-            } // end Level 2
+            } 
 
-
-        } //end bomb
+        } 
 
         //MOVE ENEMY Laser
         if (Level == 4) {
@@ -485,7 +504,7 @@ function gameCreate() {
                         //enemy_laser.state = DEAD;
                         enemy_laser.state = DEAD;
                         enemy_laser.visible = false;
-                    } // end if
+                    } 
 
                     // test for collision with player
                     if (Collision_Test(enemy_laser,player) &&
@@ -504,11 +523,11 @@ function gameCreate() {
                         // kill the original
                         enemy_laser.state = DEAD;
 
-                    } // end if collision
+                    } 
 
-                } // end if
+                } 
             },
-                this); // end for Laser
+                this); 
         }
 
         //MOVE ENEMY MISSILES
@@ -528,7 +547,7 @@ function gameCreate() {
                         enemy_missile.state = DEAD;
                         enemy_missile.visible = false;
 
-                    } // end if
+                    } 
 
                     // test for collision with player
                     if (Collision_Test(enemy_missile,player) &&
@@ -548,12 +567,12 @@ function gameCreate() {
                         enemy_missile.state = DEAD;
                         enemy_missile.visible = false;
 
-                    } // end if collision
+                    } 
 
-                } // end if
+                } 
             },
-                this); // end for Laser
-        } // end Move_Laser
+                this); 
+        } 
     };
     //////////////////////////////////////////////////////////
 
@@ -575,10 +594,7 @@ function gameCreate() {
             // collision detected!
         }
         return false;
-    }; // end Collision_Test
-
-
-    ///////////////////////////////////////////////////////////
+    }; 
 
     function Fire_Laser(x,y)
     {
@@ -590,9 +606,7 @@ function gameCreate() {
         laser.reset(x, y);
         laser.state = ALIVE;
 
-    }; // end Fire_Laser
-
-    ///////////////////////////////////////////////////////////
+    }; 
 
     function Drop_Bomb(x,y, vel)
     {
@@ -611,12 +625,11 @@ function gameCreate() {
             bomb.state = ALIVE;
             bomb.visible = true;
 
-        } // end if
+        } 
 
 
-    }; // end Drop_Bomb
-    ///////////////////////////////////////////////////////////
-
+    }; 
+    
     function Send_Fuel_Plane()
     {
         if(fuel_plane.state==ALIVE)
@@ -631,9 +644,7 @@ function gameCreate() {
             fuel_plane.state = DEAD;
             fuel_plane.x = 0;
         }
-    }; // end Fire_Laser
-
-    ///////////////////////////////////////////////////////////
+    }; 
 
     function Fire_Enemy_Laser(x,y, vel)
     {
@@ -655,13 +666,13 @@ function gameCreate() {
                 // later
                 fireOne=true;
 
-            } // end if
+            } 
         },
-                this); // end for Laser
+                this);
 
 
-        }; // end Fire_Laser
-///////////////////////////////////////////////////////////
+        }; 
+
 function Fire_Enemy_Missile(x,y)
 {
 // this function fires a Laser pulse at the given starting
@@ -682,14 +693,13 @@ if (enemy_missile.state == DEAD)
     // later
     return;
 
-} // end if
+} 
     },
-                this); // end for Laser
+                this); 
 
 
-}; // end Fire_Enemy_Missile
+}; 
 
-///////////////////////////////////////////////////////////
 function Init_Enemies()
 {
     // this function initializes and loads all the enemies 
@@ -779,9 +789,8 @@ function Init_Enemies()
     // set alive to off
     launch_pad.state = DEAD;
 
-}; // end Init_enemies
+}; 
 
-    ///////////////////////////////////////////////////////////
 function Initialize_Enemy_Positions()
 {
 
@@ -856,9 +865,7 @@ function Delete_Enemies()
     tank.kill();
     launch_pad.kill();
     fuel_plane.kill();
-}; // end Delete_enemies
-
-    ///////////////////////////////////////////////////////////
+}; 
 
  function Move_Enemies()
 {
@@ -900,11 +907,11 @@ if (Level==1 || Level==3 || Level==5)
     // update score
                     player_score += 60;
                     house.reset();
-        } // end if collision
+        } 
     },
         this);
 
-}//Level 1
+}
 
 if (Level==2 || Level==4)	
 {
@@ -941,7 +948,7 @@ if (Level==2 || Level==4)
                 player_score += 60;
                 jet.x=SCREEN_WIDTH;
                 jet.y=getRandomInt(0, SCREEN_HEIGHT);
-            } // end if collision
+            } 
         }
     },
              this);
@@ -1026,7 +1033,7 @@ if (Level==3 || Level==5)
                 player_score += 60;
                 airships_active = 1;
                 airship.x = SCREEN_WIDTH;
-            } // end if collision
+            } 
         }
     },
         this);
@@ -1045,8 +1052,7 @@ if (Level==3 || Level==5)
 	     balloon.state = DEAD;
 	     balloon.visible = false;
 	 }
- } // end for index
-
+ } 
     
     // test for collision with enemies
     if (Collision_Test(player,balloon)
@@ -1061,7 +1067,7 @@ if (Level==3 || Level==5)
     // update score
                    player_score += 60;
                    balloon.reset();
-} // end if collision
+} 
 
     },
          this);
@@ -1081,7 +1087,7 @@ if (Level==4)
 }//Level 4
 
 
-}; // end Move_enemies
+}; 
 
 function Add_Jet()
 {
@@ -1125,10 +1131,7 @@ function Init_Explosions()
     //
 
 
-}; // end Init_Explosions
-
-    ///////////////////////////////////////////////////////////
-
+}; 
 
 function Start_Explosion (x, y, width, height, xv,yv)
 {
@@ -1144,9 +1147,7 @@ function Start_Explosion (x, y, width, height, xv,yv)
 
  
 
-}; // end Start_Explosion
-
-    ///////////////////////////////////////////////////////////
+}; 
 
 function Release_Balloon(x,y)
 {
@@ -1163,9 +1164,8 @@ function Release_Balloon(x,y)
         released = true;
     }
 
-}; // end Start_Explosion
+}; 
 
-    ///////////////////////////////////////////////////////////
 function Init_Score()
 {
     var f = '16pt Arial';
@@ -1192,9 +1192,8 @@ function Draw_Score()
 
     Update_Score_Text(3,"SHIPS: " + player_ships);
 
-}; // end Draw_Info
+}; 
 
-    ///////////////////////////////////////////////////////////
 function Regenerate_Player()
 {
     //++player_counter > 60 && 
@@ -1249,10 +1248,7 @@ if (Level==4)
     Draw_Info_Text("DEMOLISH THE TANK AGAIN", 300, 250, 32, 'rgb(0,255,0)', 'Impact');
 if (Level==5)
     Draw_Info_Text("WIPE OUT THE HEADQUARTERS", 300, 250, 32, 'rgb(0,255,0)', 'Impact');
-}; // end Do_Intro
-
-
-    ///////////////////////////////////////////////////////////
+}; 
 
 function Game_Shutdown()
 {
@@ -1274,9 +1270,8 @@ Delete_Laser();
 
     // return success
 return(1);
-}; // end Game_Shutdown
+}; 
 
-    ///////////////////////////////////////////////////////
 function Game_Main()
 {
     // this is the workhorse of your game it will be called
@@ -1303,6 +1298,10 @@ if (Fuel_Left == MAX_FUEL/2) {
     Send_Fuel_Plane();
 
 }
+
+ arrows.forEach(arrow => {
+  arrow.events.onInputDown.add(arrowClick, this);
+});
 
 if (fuel_plane.state == ALIVE || fuel_tank.state == ALIVE) {
     fuel_plane.x += fuel_plane.xv;
@@ -1362,8 +1361,8 @@ if (player_damage >= 100)
     player_ships--;
     // set counter to 0
     player_counter = 0;
-} // end if
-} // end if player alive
+} 
+} 
 
 
 if (player.state == DEAD)
@@ -1378,7 +1377,7 @@ if (player.state == DEAD)
     ready_state = 1;
     ready_counter = 0;
     // set position
-} // end if
+} 
 
     //GAME OVER ?
 if (player.state == DEAD && player_ships == 0)
@@ -1393,7 +1392,7 @@ if (player.state == DEAD && player_ships == 0)
     Draw_Info_Text("Press spacebar play again",
                  220,
                  280, 32, 'rgb(255,0,0)', 'Impact');
-} // end if
+} 
 
 
     //NEXT LEVEL?
@@ -1467,7 +1466,7 @@ if (player_score > highscore) highscore = player_score;
 if (player.state == ALIVE)
 {
     player.visible = true;
-} // end if
+} 
 
     // move the Laser
 Move_Laser();
@@ -1500,7 +1499,7 @@ Draw_Score();
     // return success
 return(1);
 
-}; // end Game_Main
+}; 
 
 function Update_Score_Text(index,text)
 {
@@ -1517,3 +1516,23 @@ function Draw_Info_Text(text,x,y,size,color,font)
     game.time.events.add(5000, infoText.destroy, infoText);
     infoText.anchor.setTo(0.5);
 }
+
+function arrowClick(gameObject)
+{
+  switch (gameObject.name) {
+    case 'right':
+      MoveRight();
+    break;
+    case 'left':
+      MoveLeft();
+    break;
+    case 'up':
+      MoveUp();
+    break;
+    case 'down':
+      MoveDown();
+      break;
+    default:
+      break;
+  } 
+  }

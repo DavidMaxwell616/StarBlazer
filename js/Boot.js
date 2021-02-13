@@ -97,3 +97,32 @@ var player_damage = 0;  // damage of player
 var player_counter = 0;  // used for state transition tracking
 var player_regen_count = 0;  // used to regenerate player
 var startGame = false;
+var mouseDown;
+var arrows =new Array(4);
+var arrowStats = [
+  {
+    angle: 0,
+  yOffset: 0,
+  xOffset: 30,
+  direction:'right',
+  },
+  {
+    angle: 90,
+  yOffset: 30,
+  xOffset: 0,
+  direction:'down',
+  }  ,
+  {
+    angle: 180,
+  yOffset: 0,
+  xOffset: -30,
+  direction:'left',
+  }  ,
+  {
+    angle: 270,
+  yOffset: -30,
+  xOffset: 0,
+  direction:'up',
+  }  
+  ];
+  var arrowDown=false;
